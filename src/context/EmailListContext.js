@@ -17,7 +17,7 @@ export const EmailListProvider = ({ children }) => {
     try {
       const response = await fetch(apiUrl);
       const result = await response.json();
-      console.log(result, "result");
+      // console.log(result, "result");
       setLoader(false);
       if (page === 1) {
         setEmailPages({
@@ -35,15 +35,34 @@ export const EmailListProvider = ({ children }) => {
     }
   };
 
+  const toggleFavorite = (id) => {
+    const foundEmail = emailPages.list.find((email) => email.id === id);
+    console.log(foundEmail);
+
+    const emailList = emailPages.list.map((email) =>
+      email.id === id ? { ...email, favorite: !email.favorite } : { ...email }
+    );
+
+    console.log(emailList, "lllllltoggleFavorite");
+    setEmailPages({
+      ...emailPages,
+      list: emailList,
+      total: emailPages.total,
+    });
+    setEmailDetail({ ...foundEmail, favorite: !foundEmail.favorite });
+  };
+
   const getFilteredList = () => {
     try {
-      console.log(emailPages, "dhwhwheiquwi");
+      // console.log(emailPages, "dhwhwheiquwi");
       return emailPages.list.filter((item) => {
         switch (filterBy) {
           // case "read":
           //   return item.read === true;
           case "unread":
             return item.read === false;
+          case "favorite":
+            return item.favorite === true;
           default:
             return item;
         }
@@ -59,9 +78,20 @@ export const EmailListProvider = ({ children }) => {
         "https://flipkart-email-mock.now.sh/?id=" + email?.id
       );
       const result = await response.json();
-      console.log(result, "result");
+      // console.log(result, "result");
       // setLoader(false);
       setEmailDetail({ ...email, ...result });
+      const emailList = emailPages.list.map((item) => {
+        return email.id === item.id
+          ? { ...email, ...result, read: true }
+          : item;
+      });
+      console.log(emailList, "viewEmailDetail");
+      setEmailPages({
+        ...emailPages,
+        list: emailList,
+        total: emailPages.total,
+      });
 
       // return result;
     } catch (err) {
@@ -87,6 +117,7 @@ export const EmailListProvider = ({ children }) => {
     setViewMail,
     viewEmailDetail,
     emailDetail,
+    toggleFavorite,
   };
 
   return <EmailList.Provider value={value}>{children}</EmailList.Provider>;

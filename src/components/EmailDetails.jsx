@@ -1,13 +1,15 @@
 import { useEmails } from "../context/EmailListContext";
 import { getDisplayDate, getFromCharacter, getHTML } from "../utils";
 export default function EmailDetails() {
-  const { emailDetail } = useEmails();
+  const { emailDetail, toggleFavorite } = useEmails();
   console.log(emailDetail, "jjjjjjjjjjjjjjjjjjjjj");
 
   const nodes = getHTML(emailDetail?.body);
+  const favorite = emailDetail?.favorite;
+  console.log(favorite, " favvvvv");
 
   const handleFavourite = (emailId) => {
-    console.log(emailId);
+    toggleFavorite(emailId);
   };
 
   return (
@@ -39,13 +41,13 @@ export default function EmailDetails() {
               <button
                 className="border rounded-full px-3 py-1 text-xs"
                 style={{
-                  backgroundColor: "#e54065",
-                  color: "white",
+                  backgroundColor: favorite ? "#ffffff" : "#e54065",
+                  color: favorite ? "#e54065" : "#ffffff",
                   borderColor: "#e54065",
                 }}
                 onClick={() => handleFavourite(emailDetail?.id)}
               >
-                Mark as favorite
+                {favorite ? "Unmark as favorite" : "Mark as favorite"}
               </button>
             </div>
             <div className="text-sm">{nodes}</div>

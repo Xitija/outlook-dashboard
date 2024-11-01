@@ -21,7 +21,7 @@ export default function Email(email) {
     <div
       className="mt-4 p-4 border rounded-lg"
       style={{
-        borderColor: "#cfd2dc",
+        borderColor: emailDetail?.id === email?.id ? "#e54065" : "#cfd2dc",
         backgroundColor: email.read ? "#f2f2f2" : "#ffffff",
       }}
       onClick={handleEmailClick}
@@ -58,9 +58,18 @@ export default function Email(email) {
               <span>
                 {displayDate} {time.toLowerCase()}
               </span>
-              <span className="font-semibold" style={{ color: "#e54065" }}>
-                Favourite
-              </span>
+              {email.favorite && (
+                <span
+                  className="font-semibold"
+                  style={{ color: "#e54065" }}
+                  role="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  Favourite
+                </span>
+              )}
             </div>
           </div>
         </div>

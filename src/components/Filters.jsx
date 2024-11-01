@@ -1,8 +1,8 @@
 import { useEmails } from "../context/EmailListContext";
 
 export default function Filters() {
-  const { filterBy, setFilterBy } = useEmails();
-  const filters = ["Unread", "Read", "Favorites"];
+  const { filterBy, setFilterBy, setViewMail } = useEmails();
+  const filters = ["Unread", "Read", "Favorite"];
 
   return (
     <div className="flex text-sm justify-between max-w-72 mt-4">
@@ -18,7 +18,8 @@ export default function Filters() {
                 : {}
             }
             onClick={() => {
-              console.log(filter);
+              // console.log(filter);
+              setViewMail(false);
               setFilterBy(filter.toLowerCase());
             }}
             key={filter}
