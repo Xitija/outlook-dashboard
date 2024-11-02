@@ -13,7 +13,6 @@ export default function EmailslList() {
 
   let filteredList = [];
 
-  // console.log(page, emailPages, "pppp");
   if (currentPage === 1) {
     filteredList = getFilteredList().slice(0, 10);
   } else if (currentPage === 2) {

@@ -2,11 +2,9 @@ import { useEmails } from "../context/EmailListContext";
 import { getDisplayDate, getFromCharacter, getHTML } from "../utils";
 export default function EmailDetails() {
   const { emailDetail, toggleFavorite } = useEmails();
-  console.log(emailDetail, "jjjjjjjjjjjjjjjjjjjjj");
 
   const nodes = getHTML(emailDetail?.body);
   const favorite = emailDetail?.favorite;
-  console.log(favorite, " favvvvv");
 
   const handleFavourite = (emailId) => {
     toggleFavorite(emailId);

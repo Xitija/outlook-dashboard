@@ -20,7 +20,6 @@ export const EmailListProvider = ({ children }) => {
 
   const getEmailList = async (page) => {
     try {
-      console.log(!fetchedPages.includes(page), fetchedPages, "result");
       // setLoader(false);
       if (!fetchedPages.includes(page)) {
         const response = await fetch(apiUrl + page);
@@ -44,13 +43,11 @@ export const EmailListProvider = ({ children }) => {
 
   const toggleFavorite = (id) => {
     const foundEmail = emailPages.list.find((email) => email.id === id);
-    console.log(foundEmail);
 
     const emailList = emailPages.list.map((email) =>
       email.id === id ? { ...email, favorite: !email.favorite } : { ...email }
     );
 
-    console.log(emailList, "lllllltoggleFavorite");
     setEmailPages({
       ...emailPages,
       list: emailList,
@@ -61,7 +58,6 @@ export const EmailListProvider = ({ children }) => {
 
   const getFilteredList = () => {
     try {
-      // console.log(emailPages, "dhwhwheiquwi");
       return emailPages.list.filter((item) => {
         switch (filterBy) {
           // case "read":
@@ -87,7 +83,6 @@ export const EmailListProvider = ({ children }) => {
       });
       const response = await fetch(emailUrl + email?.id);
       const result = await response.json();
-      // console.log(result, "result");
       // setLoader(false);
       setEmailDetail({ ...email, ...result });
       const emailList = emailPages.list.map((item) => {
@@ -95,7 +90,7 @@ export const EmailListProvider = ({ children }) => {
           ? { ...email, ...result, read: true }
           : item;
       });
-      console.log(emailList, "viewEmailDetail");
+
       setEmailPages({
         ...emailPages,
         list: emailList,

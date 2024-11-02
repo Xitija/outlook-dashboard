@@ -18,7 +18,6 @@ export default function Filters() {
                 : {}
             }
             onClick={() => {
-              // console.log(filter);
               setViewMail(false);
               setFilterBy(filter.toLowerCase());
             }}

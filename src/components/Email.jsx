@@ -12,7 +12,6 @@ export default function Email(email) {
   });
 
   const handleEmailClick = () => {
-    console.log(emailDetail?.id, email?.id, "match");
     setViewMail(emailDetail?.id === email?.id ? !viewMail : true);
     viewEmailDetail(email);
   };
