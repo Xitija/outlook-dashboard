@@ -22,7 +22,7 @@ export default function EmailslList({ page }) {
   const filteredList = getFilteredList();
 
   return (
-    <div>
+    <div className="w-full">
       {filteredList?.map((email) => (
         <Email key={email.id + "email"} {...email} />
       ))}

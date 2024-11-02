@@ -15,7 +15,7 @@ export default function EmailDetails() {
   return (
     emailDetail && (
       <div
-        className="mt-4 ml-4 p-4 border rounded-lg"
+        className="mt-4 ml-4 p-4 border rounded-lg  h-fit"
         style={{
           borderColor: "#cfd2dc",
           backgroundColor: "#ffffff",
