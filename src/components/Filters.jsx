@@ -28,12 +28,6 @@ export default function Filters() {
           </span>
         );
       })}
-      {/* <span
-        className="px-3 border rounded-full"
-        style={{ backgroundColor: "#e1e4ea", borderColor: "#cfd2dc" }}
-      >
-        Read
-      </span>{" "} */}
     </div>
   );
 }

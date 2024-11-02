@@ -4,12 +4,12 @@ import Email from "../../components/Email";
 import { MESSAGES } from "../../constants";
 
 export default function EmailslList() {
-  const { currentPage, emailPages, getFilteredList, getEmailList, filterBy } =
+  const { currentPage, getFilteredList, getEmailList, filterBy } =
     useEmails();
 
   useEffect(() => {
     getEmailList(currentPage);
-  }, [currentPage]);
+  }, [currentPage, getEmailList]);
 
   let filteredList = [];
 

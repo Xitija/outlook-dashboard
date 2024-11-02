@@ -1,4 +1,4 @@
-import { useEffect, useContext, createContext, useState } from "react";
+import { useContext, createContext, useState } from "react";
 
 export const EmailList = createContext();
 
