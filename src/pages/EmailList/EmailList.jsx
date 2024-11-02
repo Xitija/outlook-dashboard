@@ -3,36 +3,39 @@ import { useEmails } from "../../context/EmailListContext";
 import Email from "../../components/Email";
 import { MESSAGES } from "../../constants";
 
-export default function EmailslList({ page }) {
-  const { emailPages, getFilteredList, getEmailList, filterBy } = useEmails();
+export default function EmailslList() {
+  const { currentPage, emailPages, getFilteredList, getEmailList, filterBy } =
+    useEmails();
 
   useEffect(() => {
-    getEmailList(page);
-  }, [page]);
+    getEmailList(currentPage);
+  }, [currentPage]);
 
-  let emails = [];
+  let filteredList = [];
 
-  //   console.log(page, emailPages, "pppp");
-  if (page === 1) {
-    // console.log(page, "pagee");
-    emails = emailPages.list;
-  } else if (page === 2) {
-    emails = emailPages.list;
+  // console.log(page, emailPages, "pppp");
+  if (currentPage === 1) {
+    filteredList = getFilteredList().slice(0, 10);
+  } else if (currentPage === 2) {
+    filteredList = getFilteredList().slice(10, 10 * 2);
   }
-
-  const filteredList = getFilteredList();
 
   return (
     <div className="w-full">
       {filteredList?.map((email) => (
         <Email key={email.id + "email"} {...email} />
       ))}
-      {!filteredList.length && filterBy === "unread" && (
-        <p className="my-4">{MESSAGES.NO_UNREAD_MAILS}</p>
-      )}
-      {!filteredList.length && filterBy === "favorite" && (
-        <p className="my-4">{MESSAGES.NO_FAVORITE_MAILS}</p>
-      )}
+      <div className="text-sm italic">
+        {!filteredList.length && filterBy === "unread" && (
+          <p className="my-4">{MESSAGES.NO_UNREAD_MAILS}</p>
+        )}
+        {!filteredList.length && filterBy === "favorite" && (
+          <p className="my-4">{MESSAGES.NO_FAVORITE_MAILS}</p>
+        )}
+        {!filteredList.length && filterBy === "read" && (
+          <p className="my-4">{MESSAGES.LOADING}</p>
+        )}
+      </div>
     </div>
   );
 }

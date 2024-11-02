@@ -3,30 +3,37 @@ import { useEffect, useContext, createContext, useState } from "react";
 export const EmailList = createContext();
 
 export const EmailListProvider = ({ children }) => {
-  const apiUrl = `https://flipkart-email-mock.now.sh/?page=1`;
-  const [loader, setLoader] = useState(false);
+  const apiUrl = `https://flipkart-email-mock.now.sh/?page=`;
+  const emailUrl = `https://flipkart-email-mock.now.sh/?id=`;
+  // const [loader, setLoader] = useState(false);
   const [filterBy, setFilterBy] = useState("read");
   const [viewMail, setViewMail] = useState(false);
   const [emailDetail, setEmailDetail] = useState();
   const [emailPages, setEmailPages] = useState({
     list: [],
-    total: 0,
+    totalEmails: 0,
   });
+  const [pages, setPages] = useState(0);
+  const [fetchedPages, setFetchedPages] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const emailsPerPage = 10;
 
   const getEmailList = async (page) => {
     try {
-      const response = await fetch(apiUrl);
-      const result = await response.json();
-      // console.log(result, "result");
-      setLoader(false);
-      if (page === 1) {
+      console.log(!fetchedPages.includes(page), fetchedPages, "result");
+      // setLoader(false);
+      if (!fetchedPages.includes(page)) {
+        const response = await fetch(apiUrl + page);
+        const result = await response.json();
         setEmailPages({
           ...emailPages,
           list: [...emailPages.list, ...mapRead(result.list)],
-          total: result.total,
+          totalEmails: result.total,
         });
-      } else if (page === 2) {
-        setEmailPages({ ...emailPages, page2: result });
+        setFetchedPages([...fetchedPages, parseInt(page)]);
+        setPages(Math.ceil(result.total / emailsPerPage));
+      } else {
+        // setEmailPages({ ...emailPages, page2: result });
       }
 
       // return result;
@@ -74,9 +81,11 @@ export const EmailListProvider = ({ children }) => {
 
   const viewEmailDetail = async (email) => {
     try {
-      const response = await fetch(
-        "https://flipkart-email-mock.now.sh/?id=" + email?.id
-      );
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      const response = await fetch(emailUrl + email?.id);
       const result = await response.json();
       // console.log(result, "result");
       // setLoader(false);
@@ -102,12 +111,11 @@ export const EmailListProvider = ({ children }) => {
   const mapRead = (mails) =>
     mails.map((mail) => ({ ...mail, read: false, favorite: false }));
 
-  useEffect(() => {
-    setLoader(true);
-  }, []);
+  // useEffect(() => {
+  //   setLoader(true);
+  // }, []);
 
   const value = {
-    loader,
     getEmailList,
     getFilteredList,
     emailPages,
@@ -118,6 +126,9 @@ export const EmailListProvider = ({ children }) => {
     viewEmailDetail,
     emailDetail,
     toggleFavorite,
+    pages,
+    currentPage,
+    setCurrentPage,
   };
 
   return <EmailList.Provider value={value}>{children}</EmailList.Provider>;
