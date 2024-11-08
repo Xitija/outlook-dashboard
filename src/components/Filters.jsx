@@ -5,7 +5,7 @@ export default function Filters() {
   const filters = ["Unread", "Read", "Favorite"];
 
   return (
-    <div className="flex text-sm justify-between max-w-72 mt-4">
+    <div className="flex text-sm justify-between min-w-64 max-w-72 mt-4">
       Filter By:
       {filters.map((filter) => {
         const selectedFilter = filterBy === filter.toLowerCase();

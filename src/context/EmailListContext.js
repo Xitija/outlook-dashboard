@@ -5,7 +5,7 @@ export const EmailList = createContext();
 export const EmailListProvider = ({ children }) => {
   const apiUrl = `https://flipkart-email-mock.now.sh/?page=`;
   const emailUrl = `https://flipkart-email-mock.now.sh/?id=`;
-  // const [loader, setLoader] = useState(false);
+
   const [filterBy, setFilterBy] = useState("read");
   const [viewMail, setViewMail] = useState(false);
   const [emailDetail, setEmailDetail] = useState();
@@ -20,7 +20,6 @@ export const EmailListProvider = ({ children }) => {
 
   const getEmailList = async (page) => {
     try {
-      // setLoader(false);
       if (!fetchedPages.includes(page)) {
         const response = await fetch(apiUrl + page);
         const result = await response.json();
@@ -83,7 +82,7 @@ export const EmailListProvider = ({ children }) => {
       });
       const response = await fetch(emailUrl + email?.id);
       const result = await response.json();
-      // setLoader(false);
+      
       setEmailDetail({ ...email, ...result });
       const emailList = emailPages.list.map((item) => {
         return email.id === item.id
@@ -105,10 +104,6 @@ export const EmailListProvider = ({ children }) => {
 
   const mapRead = (mails) =>
     mails.map((mail) => ({ ...mail, read: false, favorite: false }));
-
-  // useEffect(() => {
-  //   setLoader(true);
-  // }, []);
 
   const value = {
     getEmailList,

@@ -1,17 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
 // import './assets/main.css';
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { EmailListProvider } from "./context/EmailListContext";
+import { AnalyticsDataProvider } from "./context/AnalyticsDataContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <EmailListProvider>
-      <App />
-    </EmailListProvider>
+    <Router>
+      <EmailListProvider>
+        <AnalyticsDataProvider>
+          <App />
+        </AnalyticsDataProvider>
+      </EmailListProvider>
+    </Router>
   </React.StrictMode>
 );
 
