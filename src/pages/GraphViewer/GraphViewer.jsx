@@ -1,6 +1,5 @@
-// import "./styles.css";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
 import "react-datepicker/dist/react-datepicker.css";
 import {
   BarChart,
@@ -16,6 +15,8 @@ import { useData } from "../../context/AnalyticsDataContext";
 import GraphFilters from "../../components/GraphFilters";
 
 export function GraphViewer() {
+  const navigate = useNavigate();
+
   const { data, getGraphData, defaultDate } = useData();
   const [startDate, setStartDate] = useState(new Date(defaultDate));
   const [endDate, setEndDate] = useState(new Date(defaultDate));
@@ -47,8 +48,9 @@ export function GraphViewer() {
     return `${year}-${month}-${day}`;
   }
 
-  const handleClick = () => {
-    console.log("Clicked");
+  const handleClick = (e) => {
+    console.log("Clicked", e, e.name);
+    navigate("/timetrend" + `/${e.name}`);
   };
 
   const combinedTimeSpent = data.reduce(
@@ -132,7 +134,7 @@ export function GraphViewer() {
           <Tooltip />
           <Legend />
           <Bar
-            onClick={handleClick}
+            onClick={(e) => handleClick(e)}
             dataKey="timespent"
             fill="#220ddb"
             activeBar={<Rectangle fill="#db5c0d" stroke="blue" />}

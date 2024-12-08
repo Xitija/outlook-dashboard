@@ -2,6 +2,7 @@ import { Routes, Route, NavLink, useLocation } from "react-router-dom";
 import Filters from "./components/Filters";
 import { EmailView } from "./pages/EmailList/EmailView";
 import { GraphViewer } from "./pages/GraphViewer/GraphViewer";
+import TimeTrend from "./pages/TimeTrend/TimeTrend";
 
 function App() {
   const location = useLocation();
@@ -32,6 +33,7 @@ function App() {
       <Routes>
         <Route path="/" element={<EmailView />} />
         <Route path="/reports" element={<GraphViewer />} />
+        <Route path="/timetrend/:category" element={<TimeTrend />} />
       </Routes>
     </div>
   );
