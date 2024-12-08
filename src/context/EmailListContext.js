@@ -5,18 +5,34 @@ export const EmailList = createContext();
 export const EmailListProvider = ({ children }) => {
   const apiUrl = `https://flipkart-email-mock.now.sh/?page=`;
   const emailUrl = `https://flipkart-email-mock.now.sh/?id=`;
+  const emailsPerPage = 10;
+
+  const localFetchedPages = localStorage.getItem("fetchedPages");
+  const locallyFetchedPageArray = localFetchedPages?.split(",");
+
+  const localEmails = localStorage.getItem("emails");
+  const locallyFetchedEmails = JSON.parse(localEmails);
 
   const [filterBy, setFilterBy] = useState("read");
   const [viewMail, setViewMail] = useState(false);
   const [emailDetail, setEmailDetail] = useState();
-  const [emailPages, setEmailPages] = useState({
-    list: [],
-    totalEmails: 0,
-  });
-  const [pages, setPages] = useState(0);
-  const [fetchedPages, setFetchedPages] = useState([]);
+  const [emailPages, setEmailPages] = useState(
+    locallyFetchedEmails?.totalEmails
+      ? { ...locallyFetchedEmails }
+      : {
+          list: [],
+          totalEmails: 0,
+        }
+  );
+  const [pages, setPages] = useState(
+    Math.ceil(locallyFetchedEmails?.totalEmails / emailsPerPage) || 0
+  );
+  const [fetchedPages, setFetchedPages] = useState(
+    locallyFetchedPageArray?.length
+      ? locallyFetchedPageArray.map((num) => parseInt(num))
+      : []
+  );
   const [currentPage, setCurrentPage] = useState(1);
-  const emailsPerPage = 10;
 
   const getEmailList = async (page) => {
     try {
@@ -28,10 +44,17 @@ export const EmailListProvider = ({ children }) => {
           list: [...emailPages.list, ...mapRead(result.list)],
           totalEmails: result.total,
         });
+        localStorage.setItem(
+          "emails",
+          JSON.stringify({
+            ...emailPages,
+            list: [...emailPages.list, ...mapRead(result.list)],
+            totalEmails: result.total,
+          })
+        );
         setFetchedPages([...fetchedPages, parseInt(page)]);
+        localStorage.setItem("fetchedPages", [...fetchedPages, parseInt(page)]);
         setPages(Math.ceil(result.total / emailsPerPage));
-      } else {
-        // setEmailPages({ ...emailPages, page2: result });
       }
 
       // return result;
@@ -52,6 +75,14 @@ export const EmailListProvider = ({ children }) => {
       list: emailList,
       total: emailPages.total,
     });
+    localStorage.setItem(
+      "emails",
+      JSON.stringify({
+        ...emailPages,
+        list: emailList,
+        total: emailPages.total,
+      })
+    );
     setEmailDetail({ ...foundEmail, favorite: !foundEmail.favorite });
   };
 
@@ -82,7 +113,7 @@ export const EmailListProvider = ({ children }) => {
       });
       const response = await fetch(emailUrl + email?.id);
       const result = await response.json();
-      
+
       setEmailDetail({ ...email, ...result });
       const emailList = emailPages.list.map((item) => {
         return email.id === item.id
@@ -95,7 +126,15 @@ export const EmailListProvider = ({ children }) => {
         list: emailList,
         total: emailPages.total,
       });
-
+      // store in local storage
+      localStorage.setItem(
+        "emails",
+        JSON.stringify({
+          ...emailPages,
+          list: emailList,
+          total: emailPages.total,
+        })
+      );
       // return result;
     } catch (err) {
       console.log(err, "errr");
