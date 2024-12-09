@@ -49,7 +49,6 @@ export function GraphViewer() {
   }
 
   const handleClick = (e) => {
-    console.log("Clicked", e, e.name);
     navigate("/timetrend" + `/${e.name}`);
   };
 
