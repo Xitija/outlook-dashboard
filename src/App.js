@@ -6,7 +6,6 @@ import TimeTrend from "./pages/TimeTrend/TimeTrend";
 
 function App() {
   const location = useLocation();
-  console.log(location.pathname);
 
   const getActiveStyle = ({ isActive }) => ({
     color: isActive ? "#e54065" : "#636363",

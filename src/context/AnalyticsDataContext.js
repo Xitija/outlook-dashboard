@@ -26,7 +26,6 @@ export const AnalyticsDataProvider = ({ children }) => {
     });
 
     const result = await response.json();
-    console.log(result, "result");
     setData(result.analytics_data);
     return result;
   };
@@ -49,8 +48,6 @@ export const AnalyticsDataProvider = ({ children }) => {
       ...(age ? { age: { _eq: age } } : {}),
       ...(gender ? { gender: { _eq: gender } } : {}),
     };
-
-    console.log(whereObj, "kerhffnj");
 
     let where = "";
     Object.keys(whereObj).forEach((e) => {

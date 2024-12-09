@@ -9,18 +9,23 @@ import {
 } from "recharts";
 import { useParams } from "react-router-dom";
 import { useData } from "../../context/AnalyticsDataContext";
+import { graphDataGenerator } from "../../graph-utils";
 
 export default function TimeTrend() {
   const { category } = useParams();
   const { data } = useData();
-  console.log("category", category);
 
-  const timeSpentAndDate = data.map((item) => ({
-    time: item[category],
-    date: item.day,
+  const dataForCategory = graphDataGenerator(data, category);
+
+  const timeSpentAndDate = Object.keys(dataForCategory).map((key) => ({
+    date: key,
+    time: dataForCategory[key],
   }));
 
-  console.log(timeSpentAndDate);
+  // data.map((item) => ({
+  //   time: item[category],
+  //   date: item.day,
+  // }));
 
   return (
     <div className="flex grow-0 m-4 p-4" style={{ backgroundColor: "#ffffff" }}>
