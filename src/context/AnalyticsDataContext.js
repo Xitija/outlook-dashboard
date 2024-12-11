@@ -12,8 +12,64 @@ export const AnalyticsDataProvider = ({ children }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const apiSecret = process.env.REACT_APP_API_KEY;
   const [data, setData] = useState([]);
+  const defaultDate = new Date("2022-10-04"); // to initialize application
   // get default from cookie
-  const [defaultDate, setDefaultDate] = useState("2022-10-04");
+
+  const getCookies = () => {
+    const cookies = document.cookie.split(";").reduce((acc, cookie) => {
+      const [key, value] = cookie.trim().split("=");
+      const decodedKey = decodeURIComponent(key);
+      const decodedValue = decodeURIComponent(value);
+      if (decodedKey === "startDate" || decodedKey === "endDate") {
+        acc[decodedKey] = new Date(parseInt(decodedValue));
+      } else if (decodedKey.length) {
+        acc[key] = decodedValue;
+      }
+      return acc;
+    }, {});
+    if (!cookies["startDate"] || !cookies["endDate"]) {
+      cookies["startDate"] = defaultDate;
+      cookies["endDate"] = defaultDate;
+    }
+    return cookies;
+  };
+
+  const cookieObject = getCookies();
+  const [filters, setFilters] = useState({ ...cookieObject });
+
+  // const [defaultDate, setDefaultDate] = useState("2022-10-04");
+
+  function setCookie(name, value, attributes = {}) {
+    attributes = {
+      path: "/",
+      ...attributes,
+    };
+
+    if (attributes.expires instanceof Date) {
+      attributes.expires = attributes.expires.toUTCString();
+    }
+
+    let updatedCookie =
+      encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let attributeKey in attributes) {
+      updatedCookie += "; " + attributeKey;
+      let attributeValue = attributes[attributeKey];
+      if (attributeValue !== true) {
+        updatedCookie += "=" + attributeValue;
+      }
+    }
+
+    document.cookie = updatedCookie;
+  }
+
+  const clearPreferences = (cookieNames) => {
+    cookieNames.forEach((name) =>
+      setCookie(name, "", {
+        "max-age": -1,
+      })
+    );
+  };
 
   const getGraphData0 = async (lte, gte) => {
     const response = await fetch(`${apiUrl}/myquery`, {
@@ -91,7 +147,11 @@ export const AnalyticsDataProvider = ({ children }) => {
   const value = {
     getGraphData,
     data,
+    filters,
     defaultDate,
+    setFilters,
+    setCookie,
+    clearPreferences
   };
 
   return (

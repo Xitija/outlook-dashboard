@@ -17,25 +17,28 @@ import GraphFilters from "../../components/GraphFilters";
 export function GraphViewer() {
   const navigate = useNavigate();
 
-  const { data, getGraphData, defaultDate } = useData();
-  const [startDate, setStartDate] = useState(new Date(defaultDate));
-  const [endDate, setEndDate] = useState(new Date(defaultDate));
-  const [age, setAge] = useState();
-  const [gender, setGender] = useState();
+  const { data, getGraphData, filters, setFilters, setCookie } = useData();
 
-  const onChange = (dates) => {
-    const [start, end] = dates;
-
-    setStartDate(start);
-    setEndDate(end);
+  const onChange = (dateFromFilter) => {
+    const [start, end] = dateFromFilter;
+    if (start && end) {
+      setFilters({ ...filters, startDate: start, endDate: end });
+      setCookie("startDate", start?.getTime(), {
+        secure: true,
+        "max-age": 604800,
+      });
+      setCookie("endDate", end?.getTime(), { secure: true, "max-age": 604800 });
+    }
   };
 
   const onAgeSelect = (e) => {
-    setAge(e.target.value);
+    setFilters({ ...filters, age: e.target.value });
+    setCookie("age", e.target.value, { secure: true, "max-age": 604800 });
   };
 
   const onGenderSelect = (e) => {
-    setGender(e.target.value);
+    setFilters({ ...filters, gender: e.target.value });
+    setCookie("gender", e.target.value, { secure: true, "max-age": 604800 });
   };
 
   function formatDateToYYYYMMDD(date) {
@@ -49,7 +52,7 @@ export function GraphViewer() {
   }
 
   const handleClick = (e) => {
-    navigate("/timetrend" + `/${e.name}`);
+    navigate(`/timetrend/${e.name}`);
   };
 
   const combinedTimeSpent = data.reduce(
@@ -79,18 +82,17 @@ export function GraphViewer() {
   }));
 
   useEffect(() => {
-    if (startDate && endDate) {
-      // getGraphData(formatDateToYYYYMMDD(end), formatDateToYYYYMMDD(start));
+    if (filters.startDate && filters.endDate) {
       getGraphData(
-        formatDateToYYYYMMDD(endDate),
-        formatDateToYYYYMMDD(startDate),
-        age,
-        gender
+        formatDateToYYYYMMDD(filters?.endDate),
+        formatDateToYYYYMMDD(filters?.startDate),
+        filters.age,
+        filters.gender
       );
-    } else if (!startDate && !endDate) {
+    } else if (!filters.startDate && !filters.endDate) {
       alert("Please select dates properly!");
     }
-  }, [startDate, endDate, age, gender]);
+  }, [filters]);
 
   return (
     <>
@@ -144,7 +146,11 @@ export function GraphViewer() {
       {/* <p>
         Please navigate to October 2022 in the calendar to see active dates.
       </p> */}
-      <p> Default data loaded for date {defaultDate} </p>
+      <p>
+        {" "}
+        Default data loaded for date {filters?.startDate.toDateString()} -{" "}
+        {filters?.endDate.toDateString()}{" "}
+      </p>
       <a
         className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
         href="https://docs.google.com/spreadsheets/d/1bpyl4WpKNyBQnSpEjTupK419Y9EFqeYceh73av-OgkQ/edit?usp=sharing"
