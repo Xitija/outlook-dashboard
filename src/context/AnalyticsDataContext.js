@@ -9,7 +9,8 @@ import {
 export const AnalyticsData = createContext();
 
 export const AnalyticsDataProvider = ({ children }) => {
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const restAPI = process.env.REACT_APP_HASURA_API_REST;
+  const graphqlAPI = process.env.REACT_APP_HASURA_API_GRAPHQL;
   const apiSecret = process.env.REACT_APP_API_KEY;
   const [data, setData] = useState([]);
   const defaultDate = new Date("2022-10-04"); // to initialize application
@@ -72,7 +73,7 @@ export const AnalyticsDataProvider = ({ children }) => {
   };
 
   const getGraphData0 = async (lte, gte) => {
-    const response = await fetch(`${apiUrl}/myquery`, {
+    const response = await fetch(`${restAPI}/myquery`, {
       headers: {
         "Content-Type": "application/json",
         "x-hasura-admin-secret": apiSecret,
@@ -88,10 +89,7 @@ export const AnalyticsDataProvider = ({ children }) => {
 
   const getGraphData = async (lte, gte, age, gender) => {
     const config = getGraphQuery(lte, gte, age, gender);
-    const res = await fetch(
-      "https://brief-shiner-74.hasura.app/v1/graphql",
-      config
-    );
+    const res = await fetch(graphqlAPI, config);
 
     const result = await res.json();
     setData(result.data.analytics_data);
@@ -151,7 +149,7 @@ export const AnalyticsDataProvider = ({ children }) => {
     defaultDate,
     setFilters,
     setCookie,
-    clearPreferences
+    clearPreferences,
   };
 
   return (
