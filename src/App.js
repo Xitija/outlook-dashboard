@@ -22,7 +22,7 @@ function App() {
             </NavLink>
           </>
         )}
-        {location.pathname === "/reports" && (
+        {location.pathname.includes("/reports") && (
           <NavLink to="/" style={getActiveStyle}>
             <span className="underline underline-offset-4">Emails</span>
           </NavLink>
@@ -31,7 +31,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={<EmailView />} />
-        <Route path="/reports" element={<GraphViewer />} />
+        <Route
+          path="/reports/:start?/:end?/:age?/:gender?"
+          element={<GraphViewer />}
+        />
         <Route path="/timetrend/:category" element={<TimeTrend />} />
       </Routes>
     </div>

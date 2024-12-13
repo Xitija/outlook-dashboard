@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { useData } from "../context/AnalyticsDataContext";
 
@@ -7,7 +7,7 @@ export default function GraphFilters({
   onGenderSelect,
   onChange,
 }) {
-  const { filters, clearPreferences } = useData();
+  const { filters, clearPreferences, setFilters } = useData();
 
   const [startDate, setStartDate] = useState(filters.startDate);
   const [endDate, setEndDate] = useState(filters.endDate);
@@ -34,13 +34,33 @@ export default function GraphFilters({
     onGenderSelect(e);
   };
 
+  const getSharableLink = () => {
+    const host = window.location.hostname;
+    const params = `/${filters.startDate.getTime()}/${filters.endDate.getTime()}${
+      filters?.age ? "/" + encodeURIComponent(filters.age) : ""
+    }${filters?.gender ? "/" + encodeURIComponent(filters.gender) : ""}`;
+    if (host === "localhost") {
+      return `${window.location.protocol}//${window.location.hostname}:3000/reports${params}`;
+    } else {
+      return `${window.location.protocol}//${window.location.hostname}/reports${params}`;
+    }
+  };
+
   const clearFilters = () => {
     setAge(null);
     setGender(null);
     setStartDate(minDate);
     setEndDate(minDate);
+    setFilters({ startDate: minDate, endDate: minDate });
     clearPreferences(Object.keys(filters));
   };
+
+  useEffect(() => {
+    setStartDate(filters.startDate);
+    setEndDate(filters.endDate);
+    setAge(filters?.age);
+    setGender(filters?.gender);
+  }, [filters]);
 
   return (
     <div className="flex flex-col justify-around">
@@ -128,7 +148,9 @@ export default function GraphFilters({
         <div>
           <button
             className="text-sm border p-1"
-            onClick={() => {}}
+            onClick={() => {
+              navigator.clipboard.writeText(getSharableLink());
+            }}
             style={{ backgroundColor: "#e1e4ea" }}
           >
             Share

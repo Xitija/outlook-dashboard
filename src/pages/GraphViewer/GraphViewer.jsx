@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   BarChart,
@@ -16,8 +16,50 @@ import GraphFilters from "../../components/GraphFilters";
 
 export function GraphViewer() {
   const navigate = useNavigate();
+  const {
+    data,
+    clearPreferences,
+    getGraphData,
+    getCookies,
+    filters,
+    setFilters,
+    setCookie,
+  } = useData();
+  const [paramUsed, setParamUsed] = useState(false);
+  const { start: paramStart, end: paramEnd, age, gender } = useParams();
 
-  const { data, getGraphData, filters, setFilters, setCookie } = useData();
+  const getParamData = () => {
+    const data = {};
+    const pStart = parseInt(paramStart);
+    const pEnd = parseInt(paramEnd);
+    if (pStart) {
+      data["startDate"] = new Date(pStart);
+    }
+    if (pEnd) {
+      data["endDate"] = new Date(pEnd);
+    }
+    if (age && (age === ">25" || age === "15-25")) {
+      data["age"] = age;
+    }
+    if (gender && (gender === "Male" || gender === "Female")) {
+      data["gender"] = gender;
+    }
+    return data;
+  };
+
+  const setParamInFilter = (paramData) => {
+    setParamUsed(true);
+    setFilters({ ...paramData });
+    clearPreferences(Object.keys(paramData));
+    // set in cookie
+    Object.keys(paramData).forEach((param) => {
+      const value = paramData[param];
+      setCookie(
+        param,
+        param === "startDate" || param === "endDate" ? value.getTime() : value
+      );
+    });
+  };
 
   const onChange = (dateFromFilter) => {
     const [start, end] = dateFromFilter;
@@ -82,6 +124,10 @@ export function GraphViewer() {
   }));
 
   useEffect(() => {
+    const paramData = getParamData();
+    if (Object.keys(paramData).length && !paramUsed) {
+      setParamInFilter(paramData);
+    }
     if (filters.startDate && filters.endDate) {
       getGraphData(
         formatDateToYYYYMMDD(filters?.endDate),
@@ -92,7 +138,7 @@ export function GraphViewer() {
     } else if (!filters.startDate && !filters.endDate) {
       alert("Please select dates properly!");
     }
-  }, [filters]);
+  }, [filters, paramUsed]);
 
   return (
     <>
