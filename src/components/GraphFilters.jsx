@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { useData } from "../context/AnalyticsDataContext";
+import link from "../css/link-svgrepo-com.svg";
 
 export default function GraphFilters({
   onAgeSelect,
@@ -63,8 +64,8 @@ export default function GraphFilters({
   }, [filters]);
 
   return (
-    <div className="flex flex-col justify-around">
-      <div className="">
+    <div className="flex flex-col justify-around border">
+      <div className="p-2">
         <DatePicker
           selected={startDate}
           onChange={onDateChange}
@@ -138,22 +139,21 @@ export default function GraphFilters({
       <div className="flex justify-between">
         <div>
           <button
-            className="text-sm border p-1"
+            className="text-sm border rounded-md p-2 ml-2 mb-2 bg-red-600 text-white hover:bg-blue-700"
             onClick={clearFilters}
-            style={{ backgroundColor: "#e1e4ea" }}
+            // style={{ backgroundColor: "#e1e4ea" }}
           >
             Clear
           </button>
         </div>
         <div>
           <button
-            className="text-sm border p-1"
+            className="flex text-sm border rounded-md p-2 mr-2 mb-2 bg-red-600 text-white hover:bg-blue-700"
             onClick={() => {
               navigator.clipboard.writeText(getSharableLink());
             }}
-            style={{ backgroundColor: "#e1e4ea" }}
           >
-            Share
+            Share&nbsp;<img src={link} alt="link-icon" width={20} />
           </button>
         </div>
       </div>

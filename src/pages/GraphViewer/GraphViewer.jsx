@@ -183,8 +183,8 @@ export function GraphViewer() {
           <Bar
             onClick={(e) => handleClick(e)}
             dataKey="timespent"
-            fill="#220ddb"
-            activeBar={<Rectangle fill="#db5c0d" stroke="blue" />}
+            fill="#1d4ed8"
+            activeBar={<Rectangle fill="#dc2626" stroke="blue" />}
             barSize={30}
           />
         </BarChart>
