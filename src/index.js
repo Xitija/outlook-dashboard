@@ -7,6 +7,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { EmailListProvider } from "./context/EmailListContext";
 import { AnalyticsDataProvider } from "./context/AnalyticsDataContext";
+import { AuthProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <Router>
       <EmailListProvider>
         <AnalyticsDataProvider>
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </AnalyticsDataProvider>
       </EmailListProvider>
     </Router>
