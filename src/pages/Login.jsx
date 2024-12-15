@@ -11,6 +11,7 @@ export const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setMessage({});
     if (action === "login") {
       login(userCredentials.username, userCredentials.password);
     } else {

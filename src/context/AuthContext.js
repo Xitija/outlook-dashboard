@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
           loggedInUser: result.user_registry[0],
           isLoggedIn: true,
         });
-        const from = location.state?.from?.pathname || "/";
+        const from = location.state?.from?.pathname || "/reports";
         navigate(from);
       } else {
         setUserAuth({ loggedInUser: {}, isLoggedIn: false });

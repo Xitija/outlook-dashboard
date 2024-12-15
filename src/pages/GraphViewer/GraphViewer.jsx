@@ -13,9 +13,11 @@ import {
 } from "recharts";
 import { useData } from "../../context/AnalyticsDataContext";
 import GraphFilters from "../../components/GraphFilters";
+import { useAuth } from "../../context/AuthContext";
 
 export function GraphViewer() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const {
     data,
     clearPreferences,
@@ -192,17 +194,27 @@ export function GraphViewer() {
       {/* <p>
         Please navigate to October 2022 in the calendar to see active dates.
       </p> */}
-      <p>
-        {" "}
-        Default data loaded for date {filters?.startDate.toDateString()} -{" "}
-        {filters?.endDate.toDateString()}{" "}
-      </p>
-      <a
-        className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-        href="https://docs.google.com/spreadsheets/d/1bpyl4WpKNyBQnSpEjTupK419Y9EFqeYceh73av-OgkQ/edit?usp=sharing"
-      >
-        Data is shown correctly as per these numbers
-      </a>
+      <div className="flex items-center justify-between">
+        <div>
+          <p>
+            {" "}
+            Default data loaded for date {filters?.startDate.toDateString()} -{" "}
+            {filters?.endDate.toDateString()}{" "}
+          </p>
+          <a
+            className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+            href="https://docs.google.com/spreadsheets/d/1bpyl4WpKNyBQnSpEjTupK419Y9EFqeYceh73av-OgkQ/edit?usp=sharing"
+          >
+            Data is shown correctly as per these numbers
+          </a>
+        </div>
+        <button
+          className="text-sm border rounded-md p-2 ml-2 mb-2 bg-gray-400 text-white hover:bg-gray-700"
+          onClick={logout}
+        >
+          Logout
+        </button>
+      </div>
     </>
   );
 }
