@@ -14,7 +14,7 @@ function App() {
   });
 
   return (
-    <div className="mx-10 mb-5">
+    <div className={location.pathname === "/login" ? "" : "mx-10 mb-5"}>
       <div className="flex max-w-full justify-between items-center">
         {location.pathname === "/" && (
           <>

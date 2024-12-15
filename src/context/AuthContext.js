@@ -81,6 +81,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     userAuth,
     message,
+    setMessage,
   };
 
   return <Auth.Provider value={value}>{children}</Auth.Provider>;
