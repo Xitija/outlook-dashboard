@@ -153,43 +153,47 @@ export function GraphViewer() {
           onGenderSelect={onGenderSelect}
           onChange={onChange}
         />
-
-        <BarChart
-          layout="vertical"
-          width={1000}
-          height={500}
-          data={mappedTimeAndFeature}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="2 2" horizontal={false} />
-          <XAxis type="number" axisLine={false} />
-          <YAxis
-            dataKey="name"
-            label={{
-              value: "Features",
-              angle: -90,
-              position: "insideLeft",
-              fill: "#333",
-              fontSize: 18,
+        <div className="flex flex-col items-center">
+          <h1 className="text-2xl font-bold">Time Spent on Features</h1>
+          <BarChart
+            layout="vertical"
+            cursor="pointer"
+            width={850}
+            height={500}
+            data={mappedTimeAndFeature}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 20,
+              bottom: 10,
             }}
-            axisLine={false}
-            type="category"
-          />
-          <Tooltip />
-          <Legend />
-          <Bar
-            onClick={(e) => handleClick(e)}
-            dataKey="timespent"
-            fill="#1d4ed8"
-            activeBar={<Rectangle fill="#dc2626" stroke="blue" />}
-            barSize={30}
-          />
-        </BarChart>
+          >
+            <CartesianGrid strokeDasharray="2 2" horizontal={false} />
+            <XAxis type="number" axisLine={false} />
+            <YAxis
+              dataKey="name"
+              label={{
+                value: "Features",
+                angle: -90,
+                position: "insideLeft",
+                fill: "#333",
+                fontSize: 18,
+              }}
+              axisLine={false}
+              type="category"
+            />
+            <Tooltip />
+            <Legend />
+            <Bar
+              onClick={(e) => handleClick(e)}
+              dataKey="timespent"
+              fill="#1d4ed8"
+              activeBar={<Rectangle fill="#dc2626" stroke="blue" />}
+              barSize={30}
+            />
+          </BarChart>
+          <h2>Click on the Bar Graph to view Time trend</h2>
+        </div>
       </div>
       {/* <p>
         Please navigate to October 2022 in the calendar to see active dates.

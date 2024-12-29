@@ -59,7 +59,7 @@ export const EmailListProvider = ({ children }) => {
 
       // return result;
     } catch (err) {
-      console.log(err, "errr");
+      console.log(err, "error");
     }
   };
 
@@ -137,7 +137,7 @@ export const EmailListProvider = ({ children }) => {
       );
       // return result;
     } catch (err) {
-      console.log(err, "errr");
+      console.log(err, "error");
     }
   };
 
