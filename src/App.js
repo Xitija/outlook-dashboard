@@ -14,8 +14,14 @@ function App() {
   });
 
   return (
-    <div className={location.pathname === "/login" ? "" : "mx-10 mb-5"}>
-      <div className="flex max-w-full justify-between items-center">
+    <div
+      className={
+        location.pathname === "/login" || location.pathname === "/"
+          ? ""
+          : "mx-10 mb-5"
+      }
+    >
+      {/* <div className="flex max-w-full justify-between items-center">
         {location.pathname === "/" && (
           <>
             <Filters />
@@ -29,10 +35,10 @@ function App() {
             <span className="underline underline-offset-4">Emails</span>
           </NavLink>
         )}
-      </div>
+      </div> */}
 
       <Routes>
-        <Route path="/" element={<EmailView />} />
+        <Route path="/" element={<Login />} />
         <Route
           path="/reports/:start?/:end?/:age?/:gender?"
           element={
