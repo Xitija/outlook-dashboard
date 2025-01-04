@@ -19,21 +19,21 @@ function App() {
         {location.pathname === "/" && (
           <>
             <Filters />
-            <NavLink to="/reports" style={getActiveStyle}>
+            {/* <NavLink to="/reports" style={getActiveStyle}>
               <span className="underline underline-offset-4">Graph</span>
-            </NavLink>
+            </NavLink> */}
           </>
         )}
-        {location.pathname.includes("/reports") && (
+        {/* {location.pathname.includes("/reports") && (
           <NavLink to="/" style={getActiveStyle}>
             <span className="underline underline-offset-4">Emails</span>
           </NavLink>
-        )}
+        )} */}
       </div>
 
       <Routes>
         <Route path="/" element={<EmailView />} />
-        <Route
+        {/* <Route
           path="/reports/:start?/:end?/:age?/:gender?"
           element={
             <RequiresAuth>
@@ -42,7 +42,7 @@ function App() {
           }
         />
         <Route path="/timetrend/:category" element={<TimeTrend />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} /> */}
       </Routes>
     </div>
   );
