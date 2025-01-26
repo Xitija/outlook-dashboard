@@ -12,7 +12,9 @@ export const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setMessage({});
-    if (action === "login") {
+    if (e.nativeEvent.submitter.name === "guest") {
+      login("kshitija12345", "12345");
+    } else if (action === "login") {
       login(userCredentials.username, userCredentials.password);
     } else {
       signup(userCredentials.username, userCredentials.password);
@@ -108,6 +110,20 @@ export const Login = () => {
           >
             Submit
           </button>
+          {action === "login" && (
+            <button
+              className="border border-sky-500 rounded-full p-2 w-full"
+              style={{
+                backgroundColor: "#A3B18A",
+                borderColor: "#A3B18A",
+                marginTop: "0.5rem",
+              }}
+              type="submit"
+              name={"guest"}
+            >
+              Guest
+            </button>
+          )}
         </div>
         {message?.error && <p className="text-slate-50 p-4">{message.error}</p>}
         {message?.message && (
